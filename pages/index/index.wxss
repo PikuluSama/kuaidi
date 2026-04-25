@@ -67,38 +67,6 @@
   box-sizing: border-box;
 }
 
-.form-helper-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20rpx;
-  padding: 18rpx 0;
-  border-bottom: 1rpx solid var(--color-border);
-}
-
-.helper-label {
-  font-size: 24rpx;
-  color: var(--color-text-secondary);
-}
-
-.company-picker {
-  max-width: 60%;
-}
-
-.picker-value {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16rpx;
-  font-size: 26rpx;
-  color: var(--color-primary);
-}
-
-.picker-arrow {
-  font-size: 22rpx;
-  color: var(--color-brand);
-}
-
 .phone-panel {
   margin-top: 24rpx;
   padding: 24rpx;

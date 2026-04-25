@@ -28,25 +28,8 @@
       disabled="{{loading}}"
     />
 
-    <view class="form-helper-row">
-      <text class="helper-label">快递公司</text>
-      <picker
-        class="company-picker"
-        range="{{companyOptions}}"
-        range-key="name"
-        value="{{companyIndex}}"
-        bindchange="onCompanyChange"
-        disabled="{{loading}}"
-      >
-        <view class="picker-value">
-          <text>{{companyOptions[companyIndex].name}}</text>
-          <text class="picker-arrow">切换</text>
-        </view>
-      </picker>
-    </view>
-
     <view class="phone-panel" wx:if="{{showPhoneInput}}">
-      <view class="phone-copy">顺丰等场景需要收件手机号后 4 位完成校验。</view>
+      <view class="phone-copy">查询此快递需要收件手机号后4位验证。</view>
       <input
         class="input phone-input"
         placeholder="请输入收件手机号后4位"

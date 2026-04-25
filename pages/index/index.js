@@ -1,7 +1,7 @@
 // pages/index/index.js
 const api = require('../../utils/api.js')
 const storage = require('../../utils/storage.js')
-const { COMPANY_OPTIONS, isShunfeng, getCompanyName, getStateInfo } = require('../../utils/constants.js')
+const { getCompanyName, getStateInfo } = require('../../utils/constants.js')
 
 function formatQueryTime(timestamp) {
   if (!timestamp) return ''
@@ -15,9 +15,6 @@ Page({
   data: {
     trackingNum: '',
     phone: '',
-    companyOptions: COMPANY_OPTIONS,
-    companyIndex: 0,
-    selectedCompany: 'auto',
     showPhoneInput: false,
     loading: false,
     history: [],
@@ -31,13 +28,7 @@ Page({
       this.setData({ trackingNum: options.num })
     }
     if (options.com) {
-      const idx = COMPANY_OPTIONS.findIndex(c => c.code === options.com)
-      if (idx > 0) {
-        this.setData({ companyIndex: idx, selectedCompany: options.com })
-        if (options.com === 'shunfeng') {
-          this.setData({ showPhoneInput: true })
-        }
-      }
+      this.companyParam = options.com
     }
   },
 
@@ -70,10 +61,6 @@ Page({
   onTapClipboard() {
     const num = this.data.clipboardTip
     this.setData({ trackingNum: num, clipboardTip: '' })
-    if (isShunfeng(num)) {
-      const idx = COMPANY_OPTIONS.findIndex(c => c.code === 'shunfeng')
-      this.setData({ companyIndex: idx, selectedCompany: 'shunfeng', showPhoneInput: true })
-    }
   },
 
   onDismissClipboard() {
@@ -81,30 +68,15 @@ Page({
   },
 
   onNumInput(e) {
-    const num = e.detail.value
-    this.setData({ trackingNum: num })
-    // 实时检测顺丰单号
-    if (this.data.selectedCompany === 'auto') {
-      this.setData({ showPhoneInput: isShunfeng(num) })
-    }
+    this.setData({ trackingNum: e.detail.value })
   },
 
   onPhoneInput(e) {
     this.setData({ phone: e.detail.value })
   },
 
-  onCompanyChange(e) {
-    const idx = e.detail.value
-    const company = COMPANY_OPTIONS[idx]
-    this.setData({
-      companyIndex: idx,
-      selectedCompany: company.code,
-      showPhoneInput: company.code === 'shunfeng' || (company.code === 'auto' && isShunfeng(this.data.trackingNum))
-    })
-  },
-
   async onQuery() {
-    const { trackingNum, selectedCompany, phone, showPhoneInput } = this.data
+    const { trackingNum, phone, showPhoneInput } = this.data
     const num = (trackingNum || '').trim()
 
     if (!num || !/^[A-Za-z0-9\-]{6,30}$/.test(num)) {
@@ -120,7 +92,7 @@ Page({
     this.setData({ loading: true })
 
     try {
-      const result = await api.queryExpress(num, selectedCompany, showPhoneInput ? phone : '')
+      const result = await api.queryExpress(num, this.companyParam || 'auto', showPhoneInput ? phone : '')
 
       this.setData({ loading: false })
 
@@ -149,9 +121,8 @@ Page({
       } else if (result.code === 'LIMIT_EXCEEDED') {
         this._showLimitDialog()
       } else if (result.code === 'PHONE_REQUIRED') {
-        const idx = COMPANY_OPTIONS.findIndex(c => c.code === 'shunfeng')
-        this.setData({ companyIndex: idx, selectedCompany: 'shunfeng', showPhoneInput: true })
-        wx.showToast({ title: '顺丰需要手机号后4位，请填写', icon: 'none', duration: 2500 })
+        this.setData({ showPhoneInput: true })
+        wx.showToast({ title: '此快递需要手机号后4位，请填写', icon: 'none', duration: 2500 })
       } else {
         wx.showToast({ title: result.message || '查询失败，请重试', icon: 'none', duration: 2500 })
       }

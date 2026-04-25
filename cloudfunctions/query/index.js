@@ -119,11 +119,10 @@ exports.main = async (event) => {
 
   // 6. 检查快递100返回结果
   if (!queryResult || queryResult.status !== '200' || queryResult.message !== 'ok') {
-    const msg = (queryResult && queryResult.message) || '未查询到物流信息'
-    // 检查是否需要手机号
-    if (msg.includes('phone') || msg.includes('手机') || msg.includes('电话')) {
-      return { code: 'PHONE_REQUIRED', message: '该快递公司需要手机号后4位验证' }
+    if (queryResult && queryResult.returnCode === '408') {
+      return { code: 'PHONE_REQUIRED', message: '该快递需要手机号后4位验证' }
     }
+    const msg = (queryResult && queryResult.message) || '未查询到物流信息'
     return { code: 'QUERY_ERROR', message: msg }
   }
 
