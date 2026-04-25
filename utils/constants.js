@@ -40,6 +40,11 @@ const COMPANIES = {
     code: 'ems',
     name: 'EMS',
     prefix: /^[A-Z]{2}\d{9}[A-Z]{2}$/i
+  },
+  debang: {
+    code: 'debangwuliu',
+    name: '德邦物流',
+    prefix: /^DPK/i
   }
 }
 
@@ -71,8 +76,23 @@ function getStateInfo(state) {
   return map[state] || { name: '查询中', tagClass: 'tag-transit' }
 }
 
+/**
+ * 根据单号本地识别快递公司（优先匹配更具体的前缀）
+ * @param {string} num 快递单号
+ * @returns {string|null} 快递公司代码，未识别返回 null
+ */
+function detectCompany(num) {
+  // 按前缀特异性从高到低匹配，避免短前缀误匹配
+  const order = ['shunfeng', 'yuantong', 'jitu', 'jingdong', 'debang', 'yunda', 'shentong', 'ems', 'zhongtong']
+  for (const key of order) {
+    if (COMPANIES[key].prefix.test(num)) return COMPANIES[key].code
+  }
+  return null
+}
+
 module.exports = {
   COMPANIES,
   getCompanyName,
-  getStateInfo
+  getStateInfo,
+  detectCompany
 }

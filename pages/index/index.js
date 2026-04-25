@@ -1,14 +1,33 @@
 // pages/index/index.js
 const api = require('../../utils/api.js')
 const storage = require('../../utils/storage.js')
-const { getCompanyName, getStateInfo } = require('../../utils/constants.js')
+const { getCompanyName, getStateInfo, detectCompany } = require('../../utils/constants.js')
 
 function formatQueryTime(timestamp) {
   if (!timestamp) return ''
   const date = new Date(timestamp)
+  const now = new Date()
   const hour = String(date.getHours()).padStart(2, '0')
   const minute = String(date.getMinutes()).padStart(2, '0')
-  return `${hour}:${minute}`
+  const timeStr = `${hour}:${minute}`
+
+  const isToday = date.getFullYear() === now.getFullYear()
+    && date.getMonth() === now.getMonth()
+    && date.getDate() === now.getDate()
+
+  if (isToday) return timeStr
+
+  const yesterday = new Date(now)
+  yesterday.setDate(yesterday.getDate() - 1)
+  const isYesterday = date.getFullYear() === yesterday.getFullYear()
+    && date.getMonth() === yesterday.getMonth()
+    && date.getDate() === yesterday.getDate()
+
+  if (isYesterday) return `昨天 ${timeStr}`
+
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${month}-${day} ${timeStr}`
 }
 
 Page({
@@ -19,6 +38,7 @@ Page({
     loading: false,
     history: [],
     clipboardTip: '',
+    clipboardHasContent: false,
     remainingTip: ''
   },
 
@@ -68,11 +88,40 @@ Page({
   },
 
   onNumInput(e) {
-    this.setData({ trackingNum: e.detail.value })
+    this.setData({
+      trackingNum: e.detail.value,
+      clipboardHasContent: false
+    })
   },
 
   onPhoneInput(e) {
     this.setData({ phone: e.detail.value })
+  },
+
+  onInputFocus() {
+    if (this.data.trackingNum) return
+    const self = this
+    wx.getClipboardData({
+      success(res) {
+        const text = (res.data || '').trim()
+        if (/^[A-Za-z0-9\-]{6,30}$/.test(text)) {
+          self.setData({ clipboardHasContent: true })
+        }
+      },
+      fail() { /* ignore */ }
+    })
+  },
+
+  onPasteFromClipboard() {
+    const self = this
+    wx.getClipboardData({
+      success(res) {
+        const text = (res.data || '').trim()
+        if (/^[A-Za-z0-9\-]{6,30}$/.test(text)) {
+          self.setData({ trackingNum: text, clipboardHasContent: false })
+        }
+      }
+    })
   },
 
   async onQuery() {
@@ -92,7 +141,7 @@ Page({
     this.setData({ loading: true })
 
     try {
-      const result = await api.queryExpress(num, this.companyParam || 'auto', showPhoneInput ? phone : '')
+      const result = await api.queryExpress(num, this.companyParam || detectCompany(num) || 'auto', showPhoneInput ? phone : '')
 
       this.setData({ loading: false })
 
@@ -105,18 +154,20 @@ Page({
           comName: getCompanyName(result.data.com),
           state: result.data.state,
           stateName: stateInfo.name,
+          stateTag: stateInfo.tagClass,
           lastTrace: traces.length > 0 ? traces[0].context : '暂无物流信息',
           queryTime: Date.now()
         })
 
         const remaining = result.remaining
         this.setData({
-          remainingTip: remaining <= 2 ? `今日还可查询 ${remaining} 次` : '',
-          history: storage.getHistory()
+          remainingTip: remaining <= 2 ? `今日还可查询 ${remaining} 次` : ''
         })
+        this._loadHistory()
 
+        wx.setStorageSync('__temp_result', result.data)
         wx.navigateTo({
-          url: `/pages/result/result?data=${encodeURIComponent(JSON.stringify(result.data))}`
+          url: `/pages/result/result?nu=${encodeURIComponent(result.data.nu)}`
         })
       } else if (result.code === 'LIMIT_EXCEEDED') {
         this._showLimitDialog()
@@ -135,13 +186,20 @@ Page({
   onHistoryTap(e) {
     const item = e.currentTarget.dataset.item
     this.setData({ trackingNum: item.num })
-    this.onQuery()
   },
 
   onHistoryDelete(e) {
     const num = e.currentTarget.dataset.num
-    storage.removeHistory(num)
-    this.setData({ history: storage.getHistory() })
+    wx.showModal({
+      title: '提示',
+      content: '确定删除这条查询记录？',
+      success: (res) => {
+        if (res.confirm) {
+          storage.removeHistory(num)
+          this.setData({ history: storage.getHistory() })
+        }
+      }
+    })
   },
 
   onClearHistory() {

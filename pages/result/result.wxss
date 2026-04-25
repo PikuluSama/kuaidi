@@ -76,17 +76,17 @@
 
 .timeline-dot {
   position: absolute;
-  left: 6rpx;
-  top: 10rpx;
-  width: 14rpx;
-  height: 14rpx;
+  left: 3rpx;
+  top: 8rpx;
+  width: 18rpx;
+  height: 18rpx;
   border-radius: 50%;
   background-color: var(--color-border-strong);
 }
 
 .timeline-line {
   position: absolute;
-  left: 12rpx;
+  left: 11rpx;
   top: 30rpx;
   bottom: 0;
   width: 2rpx;
@@ -96,10 +96,10 @@
 /* 最新一条高亮 */
 .timeline-item.latest .timeline-dot {
   background-color: var(--color-brand);
-  width: 16rpx;
-  height: 16rpx;
-  left: 5rpx;
-  top: 9rpx;
+  width: 22rpx;
+  height: 22rpx;
+  left: 1rpx;
+  top: 6rpx;
 }
 
 .timeline-item.latest .timeline-line {

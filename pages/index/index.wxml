@@ -7,7 +7,7 @@
   <view class="clipboard-tip" wx:if="{{clipboardTip}}">
     <view class="clipboard-main" bindtap="onTapClipboard">
       <text class="clipboard-label">检测到剪贴板中的运单号</text>
-      <text class="clipboard-value">{{clipboardTip}}</text>
+      <text class="clipboard-value">{{clipboardTip}} <text class="clipboard-hint">点击使用 ›</text></text>
     </view>
     <text class="clipboard-close" catchtap="onDismissClipboard">关闭</text>
   </view>
@@ -18,15 +18,23 @@
     <view class="query-title">输入单号，快速查看最新物流状态</view>
     <view class="query-subtitle">支持自动识别快递公司，常用信息会在本机保留，便于继续查询。</view>
 
-    <input
-      class="input"
-      placeholder="请输入快递单号"
-      placeholder-class="input-placeholder"
-      value="{{trackingNum}}"
-      bindinput="onNumInput"
-      maxlength="30"
-      disabled="{{loading}}"
-    />
+    <view class="input-row">
+      <input
+        class="input input-field"
+        placeholder="请输入快递单号"
+        placeholder-class="input-placeholder"
+        value="{{trackingNum}}"
+        bindinput="onNumInput"
+        bindfocus="onInputFocus"
+        maxlength="30"
+        disabled="{{loading}}"
+      />
+      <view
+        class="input-paste"
+        wx:if="{{clipboardHasContent && !trackingNum}}"
+        catchtap="onPasteFromClipboard"
+      >粘贴</view>
+    </view>
 
     <view class="phone-panel" wx:if="{{showPhoneInput}}">
       <view class="phone-copy">查询此快递需要收件手机号后4位验证。</view>
@@ -70,20 +78,18 @@
         bindtap="onHistoryTap"
         data-item="{{item}}"
       >
-        <view class="history-main">
-          <view class="history-head">
+        <view class="history-head">
+          <view class="history-num-wrap">
             <view class="history-num">{{item.num}}</view>
-            <text class="history-state">{{item.stateName}}</text>
+            <text class="tag {{item.stateTag || 'tag-transit'}}">{{item.stateName}}</text>
           </view>
-          <view class="history-meta">
-            <text class="history-com">{{item.comName}}</text>
-            <text class="history-time">{{item.queryTimeText || ''}}</text>
-          </view>
-          <view class="history-trace text-secondary">{{item.lastTrace}}</view>
-        </view>
-        <view class="history-actions">
           <view class="history-delete" catchtap="onHistoryDelete" data-num="{{item.num}}">移除</view>
         </view>
+        <view class="history-meta">
+          <text class="history-com">{{item.comName}}</text>
+          <text class="history-time">{{item.queryTimeText || ''}}</text>
+        </view>
+        <view class="history-trace text-secondary">{{item.lastTrace}}</view>
       </view>
     </view>
   </view>
@@ -91,7 +97,7 @@
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{history.length === 0 && !loading}}">
     <text class="empty-title">还没有查询记录</text>
-    <text class="text-secondary">查询过的单号会保存在本机，方便你快速继续查看。</text>
+    <text class="empty-desc">查询过的单号会保存在本机，方便你快速继续查看。</text>
   </view>
 
 </scroll-view>

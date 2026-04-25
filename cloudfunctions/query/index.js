@@ -35,6 +35,8 @@ function httpPost(url, body) {
       })
     })
     req.on('error', reject)
+    req.on('timeout', () => { req.destroy(); reject(new Error('请求超时')) })
+    req.setTimeout(8000)
     req.write(body)
     req.end()
   })

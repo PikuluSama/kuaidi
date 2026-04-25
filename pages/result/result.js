@@ -14,10 +14,16 @@ Page({
   },
 
   onLoad(options) {
-    if (options.data) {
+    if (options.nu) {
       try {
-        const data = JSON.parse(decodeURIComponent(options.data))
-        this._renderResult(data)
+        const data = wx.getStorageSync('__temp_result')
+        wx.removeStorageSync('__temp_result')
+        const nu = decodeURIComponent(options.nu)
+        if (data && data.nu === nu) {
+          this._renderResult(data)
+        } else {
+          wx.showToast({ title: '数据异常', icon: 'none' })
+        }
       } catch (e) {
         wx.showToast({ title: '数据异常', icon: 'none' })
       }
