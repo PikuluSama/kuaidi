@@ -1,0 +1,70 @@
+.company-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #111111;
+  margin-bottom: 16rpx;
+}
+
+.company-intro {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 1.6;
+}
+
+.query-card .input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
+}
+
+.query-card .btn-primary {
+  width: 100% !important;
+  border: none;
+}
+
+.faq-title,
+.links-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #111111;
+  margin-bottom: 20rpx;
+}
+
+.faq-item {
+  margin-bottom: 24rpx;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-q {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 8rpx;
+}
+
+.faq-a {
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.link-item {
+  padding: 12rpx 24rpx;
+  background-color: #F5F5F5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #111111;
+}
+
+.link-hover {
+  background-color: #E5E5E5;
+}

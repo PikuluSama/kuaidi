@@ -1,0 +1,6 @@
+node_modules/
+.claude/
+project.private.config.json
+cloudfunctionTemplate/
+*.log
+.DS_Store

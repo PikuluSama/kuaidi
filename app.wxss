@@ -1,0 +1,87 @@
+/** app.wxss — 全局样式 **/
+
+page {
+  background-color: #F5F5F5;
+  font-size: 28rpx;
+  color: #111111;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+/* 主题色变量（CSS custom properties） */
+.container {
+  --color-primary: #111111;
+  --color-accent: #E60012;
+  --color-bg: #F5F5F5;
+  --color-card: #FFFFFF;
+  --color-text-secondary: #999999;
+  --color-border: #E5E5E5;
+  --color-white: #FFFFFF;
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+}
+
+/* 通用卡片 */
+.card {
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin: 24rpx 32rpx;
+}
+
+/* 通用按钮 */
+.btn-primary {
+  background-color: #E60012;
+  color: #FFFFFF;
+  border-radius: 8rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-primary.disabled {
+  background-color: #E5E5E5;
+  color: #999999;
+}
+
+/* 通用输入框 */
+.input {
+  background-color: #FFFFFF;
+  border: 1rpx solid #E5E5E5;
+  border-radius: 8rpx;
+  height: 80rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #111111;
+}
+
+/* 通用分割线 */
+.divider {
+  height: 1rpx;
+  background-color: #E5E5E5;
+}
+
+/* 辅助文字 */
+.text-secondary {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+/* 状态标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 4rpx;
+  font-size: 22rpx;
+  font-weight: bold;
+}
+
+.tag-signed { background-color: #E8F5E9; color: #2E7D32; }
+.tag-delivering { background-color: #FFF3E0; color: #E65100; }
+.tag-transit { background-color: #E3F2FD; color: #1565C0; }
+.tag-error { background-color: #FFEBEE; color: #C62828; }

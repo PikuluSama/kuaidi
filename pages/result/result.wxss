@@ -1,0 +1,128 @@
+/* pages/result/result.wxss */
+
+.info-card {
+  margin-top: 24rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.info-com {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #111111;
+}
+
+.info-num {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #E5E5E5;
+}
+
+.info-num text:first-child {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.copy-btn {
+  font-size: 24rpx;
+  color: #E60012;
+  padding: 4rpx 16rpx;
+  border: 1rpx solid #E60012;
+  border-radius: 4rpx;
+}
+
+/* 时间轴 */
+.timeline-card {
+  padding: 32rpx 32rpx 16rpx;
+}
+
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 40rpx;
+  padding-bottom: 32rpx;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 4rpx;
+  top: 8rpx;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background-color: #E5E5E5;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 11rpx;
+  top: 28rpx;
+  bottom: 0;
+  width: 2rpx;
+  background-color: #E5E5E5;
+}
+
+/* 最新一条高亮 */
+.timeline-item.latest .timeline-dot {
+  background-color: #E60012;
+  width: 20rpx;
+  height: 20rpx;
+  left: 2rpx;
+  top: 6rpx;
+}
+
+.timeline-item.latest .timeline-line {
+  left: 11rpx;
+}
+
+.timeline-item.latest .timeline-time {
+  font-weight: bold;
+  color: #111111;
+}
+
+.timeline-item.latest .timeline-desc {
+  font-weight: bold;
+  color: #111111;
+}
+
+.timeline-time {
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 4rpx;
+}
+
+.timeline-desc {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 1.5;
+}
+
+/* 空轨迹 */
+.empty-trace {
+  text-align: center;
+  padding: 60rpx 32rpx;
+}
+
+/* 分享 */
+.share-area {
+  padding: 24rpx 32rpx 60rpx;
+}
+
+.share-btn {
+  width: 100% !important;
+  border: none;
+}

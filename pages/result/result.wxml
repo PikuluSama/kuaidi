@@ -1,0 +1,46 @@
+<!-- pages/result/result.wxml -->
+<navigation-bar title="物流详情" back="{{true}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
+
+<scroll-view scroll-y style="height: 100vh; background-color: #F5F5F5;">
+
+  <!-- 快递信息卡片 -->
+  <view class="card info-card">
+    <view class="info-row">
+      <text class="info-com">{{comName}}</text>
+      <view class="tag {{stateTag}}">{{stateIcon}} {{stateName}}</view>
+    </view>
+    <view class="info-num" bindtap="onCopyNum">
+      <text>单号：{{nu}}</text>
+      <text class="copy-btn">复制</text>
+    </view>
+  </view>
+
+  <!-- 物流轨迹时间轴 -->
+  <view class="card timeline-card" wx:if="{{traces.length > 0}}">
+    <view class="timeline">
+      <view
+        class="timeline-item {{index === 0 ? 'latest' : ''}}"
+        wx:for="{{traces}}"
+        wx:key="time"
+      >
+        <view class="timeline-dot"></view>
+        <view class="timeline-line" wx:if="{{index < traces.length - 1}}"></view>
+        <view class="timeline-content">
+          <view class="timeline-time">{{item.ftime || item.time}}</view>
+          <view class="timeline-desc">{{item.context}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空轨迹 -->
+  <view class="card empty-trace" wx:if="{{traces.length === 0}}">
+    <text class="text-secondary">快递公司已记录单号，暂无物流更新，请稍后再查</text>
+  </view>
+
+  <!-- 分享按钮 -->
+  <view class="share-area">
+    <button class="btn-primary share-btn" open-type="share">分享给好友</button>
+  </view>
+
+</scroll-view>

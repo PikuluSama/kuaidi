@@ -1,0 +1,168 @@
+/* pages/index/index.wxss */
+
+.clipboard-tip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 32rpx 0;
+  padding: 20rpx 24rpx;
+  background-color: #FFF3E0;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #E65100;
+}
+
+.clipboard-close {
+  color: #999999;
+  padding: 0 8rpx;
+  font-size: 28rpx;
+}
+
+.query-card {
+  margin-top: 24rpx;
+}
+
+.query-card .input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
+}
+
+.company-picker {
+  margin-bottom: 20rpx;
+}
+
+.picker-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  border: 1rpx solid #E5E5E5;
+  border-radius: 8rpx;
+  height: 80rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #111111;
+}
+
+.picker-arrow {
+  font-size: 20rpx;
+  color: #999999;
+}
+
+.phone-input {
+  margin-top: 0;
+}
+
+.query-btn {
+  width: 100% !important;
+  margin-top: 20rpx;
+  border: none;
+}
+
+.query-btn.disabled {
+  background-color: #E5E5E5;
+  color: #999999;
+}
+
+.remaining-tip {
+  text-align: center;
+  margin-top: 16rpx;
+}
+
+.remaining-tip text {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.history-section {
+  margin: 24rpx 32rpx;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.history-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #111111;
+}
+
+.history-clear {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.history-list {
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #E5E5E5;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-num {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #111111;
+  margin-bottom: 8rpx;
+}
+
+.history-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 4rpx;
+}
+
+.history-com {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.history-state {
+  font-size: 22rpx;
+  color: #E60012;
+  font-weight: bold;
+}
+
+.history-trace {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4rpx;
+}
+
+.history-actions {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.history-delete {
+  font-size: 24rpx;
+  color: #E60012;
+  padding: 8rpx 16rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx 0;
+}

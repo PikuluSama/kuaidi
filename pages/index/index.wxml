@@ -1,0 +1,96 @@
+<!-- pages/index/index.wxml -->
+<navigation-bar title="快递查询" back="{{false}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
+
+<scroll-view scroll-y style="height: 100vh; background-color: #F5F5F5;">
+
+  <!-- 剪贴板提示 -->
+  <view class="clipboard-tip" wx:if="{{clipboardTip}}" bindtap="onTapClipboard">
+    <text>检测到单号 {{clipboardTip}}，点击查询</text>
+    <text class="clipboard-close" catchtap="onDismissClipboard">✕</text>
+  </view>
+
+  <!-- 查询区域 -->
+  <view class="card query-card">
+    <input
+      class="input"
+      placeholder="请输入快递单号"
+      value="{{trackingNum}}"
+      bindinput="onNumInput"
+      maxlength="30"
+      disabled="{{loading}}"
+    />
+
+    <picker
+      class="company-picker"
+      range="{{companyOptions}}"
+      range-key="name"
+      value="{{companyIndex}}"
+      bindchange="onCompanyChange"
+      disabled="{{loading}}"
+    >
+      <view class="picker-value">
+        <text>{{companyOptions[companyIndex].name}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+
+    <input
+      wx:if="{{showPhoneInput}}"
+      class="input phone-input"
+      placeholder="请输入收件手机号后4位"
+      value="{{phone}}"
+      bindinput="onPhoneInput"
+      maxlength="4"
+      type="number"
+      disabled="{{loading}}"
+    />
+
+    <button
+      class="btn-primary query-btn {{loading ? 'disabled' : ''}}"
+      bindtap="onQuery"
+      disabled="{{loading}}"
+    >
+      {{loading ? '查询中...' : '查询'}}
+    </button>
+
+    <view class="remaining-tip" wx:if="{{remainingTip}}">
+      <text>{{remainingTip}}</text>
+    </view>
+  </view>
+
+  <!-- 查询历史 -->
+  <view class="history-section" wx:if="{{history.length > 0}}">
+    <view class="history-header">
+      <text class="history-title">查询历史</text>
+      <text class="history-clear" bindtap="onClearHistory">清空</text>
+    </view>
+
+    <view class="history-list">
+      <view
+        class="history-item"
+        wx:for="{{history}}"
+        wx:key="num"
+        bindtap="onHistoryTap"
+        data-item="{{item}}"
+      >
+        <view class="history-main">
+          <view class="history-num">{{item.num}}</view>
+          <view class="history-meta">
+            <text class="history-com">{{item.comName}}</text>
+            <text class="history-state">{{item.stateName}}</text>
+          </view>
+          <view class="history-trace text-secondary">{{item.lastTrace}}</view>
+        </view>
+        <view class="history-actions">
+          <view class="history-delete" catchtap="onHistoryDelete" data-num="{{item.num}}">删除</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{history.length === 0 && !loading}}">
+    <text class="text-secondary">暂无查询记录</text>
+  </view>
+
+</scroll-view>
