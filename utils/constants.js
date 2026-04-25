@@ -84,13 +84,13 @@ function isShunfeng(num) {
  */
 function getStateInfo(state) {
   const map = {
-    '0': { name: '运输中', tagClass: 'tag-transit', icon: '📦' },
-    '1': { name: '已退回', tagClass: 'tag-error', icon: '↩️' },
-    '2': { name: '已拦截', tagClass: 'tag-error', icon: '⚠️' },
-    '3': { name: '已签收', tagClass: 'tag-signed', icon: '✓' },
-    '4': { name: '异常', tagClass: 'tag-error', icon: '⚠️' }
+    '0': { name: '运输中', tagClass: 'tag-transit' },
+    '1': { name: '已退回', tagClass: 'tag-error' },
+    '2': { name: '运输异常', tagClass: 'tag-error' },
+    '3': { name: '已签收', tagClass: 'tag-signed' },
+    '4': { name: '运输异常', tagClass: 'tag-error' }
   }
-  return map[state] || { name: '查询中', tagClass: 'tag-transit', icon: '📦' }
+  return map[state] || { name: '查询中', tagClass: 'tag-transit' }
 }
 
 module.exports = {

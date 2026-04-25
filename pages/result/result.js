@@ -7,9 +7,10 @@ Page({
     comName: '',
     stateName: '',
     stateTag: '',
-    stateIcon: '',
     traces: [],
-    shareTitle: ''
+    shareTitle: '',
+    latestTrace: '',
+    latestTime: ''
   },
 
   onLoad(options) {
@@ -40,9 +41,10 @@ Page({
       comName: getCompanyName(data.com),
       stateName: stateInfo.name,
       stateTag: stateInfo.tagClass,
-      stateIcon: stateInfo.icon,
       traces: traces,
-      shareTitle: shareTitle
+      shareTitle: shareTitle,
+      latestTrace: traces.length > 0 ? traces[0].context : '',
+      latestTime: traces.length > 0 ? (traces[0].ftime || traces[0].time || '') : ''
     })
   },
 

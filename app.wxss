@@ -1,87 +1,125 @@
 /** app.wxss — 全局样式 **/
 
 page {
-  background-color: #F5F5F5;
+  background-color: #F5F7F5;
   font-size: 28rpx;
-  color: #111111;
+  color: #111815;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
 }
 
 /* 主题色变量（CSS custom properties） */
+page,
 .container {
-  --color-primary: #111111;
-  --color-accent: #E60012;
-  --color-bg: #F5F5F5;
+  --color-primary: #111815;
+  --color-brand: #1F6B45;
+  --color-brand-press: #19563A;
+  --color-brand-soft: #E7F1EB;
+  --color-bg: #F5F7F5;
+  --color-bg-soft: #EEF2EE;
   --color-card: #FFFFFF;
-  --color-text-secondary: #999999;
-  --color-border: #E5E5E5;
+  --color-text-secondary: #5F6B63;
+  --color-text-tertiary: #8A948D;
+  --color-border: #E3E8E3;
+  --color-border-strong: #D3DBD4;
   --color-white: #FFFFFF;
-  --radius-sm: 8rpx;
-  --radius-md: 16rpx;
+  --color-success: #2F7A4F;
+  --color-success-soft: #E8F3EC;
+  --color-warning: #8A6A2F;
+  --color-warning-soft: #F6F1E5;
+  --color-error: #A14A44;
+  --color-error-soft: #F8ECEA;
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --space-1: 8rpx;
+  --space-2: 16rpx;
+  --space-3: 24rpx;
+  --space-4: 32rpx;
+  --space-5: 40rpx;
+  --space-6: 48rpx;
 }
 
 /* 通用卡片 */
 .card {
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
   padding: 32rpx;
-  margin: 24rpx 32rpx;
+  margin: 24rpx 32rpx 0;
+  box-sizing: border-box;
 }
 
 /* 通用按钮 */
 .btn-primary {
-  background-color: #E60012;
-  color: #FFFFFF;
-  border-radius: 8rpx;
-  height: 88rpx;
-  line-height: 88rpx;
+  background-color: var(--color-brand);
+  color: var(--color-white);
+  border-radius: var(--radius-sm);
+  height: 92rpx;
+  line-height: 92rpx;
   text-align: center;
-  font-size: 32rpx;
-  font-weight: bold;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
 }
 
 .btn-primary:active {
-  opacity: 0.85;
+  background-color: var(--color-brand-press);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-soft);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  border: none;
 }
 
 .btn-primary.disabled {
-  background-color: #E5E5E5;
-  color: #999999;
+  background-color: var(--color-border);
+  color: var(--color-text-tertiary);
 }
 
 /* 通用输入框 */
 .input {
-  background-color: #FFFFFF;
-  border: 1rpx solid #E5E5E5;
-  border-radius: 8rpx;
-  height: 80rpx;
-  padding: 0 24rpx;
+  background-color: var(--color-card);
+  border: 1rpx solid var(--color-border);
+  border-radius: var(--radius-sm);
+  height: 88rpx;
+  padding: 0 28rpx;
   font-size: 28rpx;
-  color: #111111;
+  color: var(--color-primary);
+  box-sizing: border-box;
+}
+
+.input-placeholder {
+  color: var(--color-text-tertiary);
 }
 
 /* 通用分割线 */
 .divider {
   height: 1rpx;
-  background-color: #E5E5E5;
+  background-color: var(--color-border);
 }
 
 /* 辅助文字 */
 .text-secondary {
-  color: #999999;
+  color: var(--color-text-secondary);
   font-size: 24rpx;
 }
 
 /* 状态标签 */
 .tag {
   display: inline-block;
-  padding: 4rpx 16rpx;
-  border-radius: 4rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
   font-size: 22rpx;
-  font-weight: bold;
+  font-weight: 500;
 }
 
-.tag-signed { background-color: #E8F5E9; color: #2E7D32; }
-.tag-delivering { background-color: #FFF3E0; color: #E65100; }
-.tag-transit { background-color: #E3F2FD; color: #1565C0; }
-.tag-error { background-color: #FFEBEE; color: #C62828; }
+.tag-signed { background-color: var(--color-success-soft); color: var(--color-success); }
+.tag-delivering,
+.tag-transit { background-color: var(--color-brand-soft); color: var(--color-brand); }
+.tag-error { background-color: var(--color-error-soft); color: var(--color-error); }

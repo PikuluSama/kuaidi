@@ -1,22 +1,25 @@
 <!-- pages/result/result.wxml -->
 <navigation-bar title="物流详情" back="{{true}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
 
-<scroll-view scroll-y style="height: 100vh; background-color: #F5F5F5;">
+<scroll-view scroll-y style="height: 100vh; background-color: #F5F7F5;">
 
   <!-- 快递信息卡片 -->
   <view class="card info-card">
-    <view class="info-row">
-      <text class="info-com">{{comName}}</text>
-      <view class="tag {{stateTag}}">{{stateIcon}} {{stateName}}</view>
+    <view class="info-status-row">
+      <view class="tag {{stateTag}}">{{stateName}}</view>
+      <text class="info-copy-action" bindtap="onCopyNum">复制单号</text>
     </view>
-    <view class="info-num" bindtap="onCopyNum">
-      <text>单号：{{nu}}</text>
-      <text class="copy-btn">复制</text>
+    <view class="info-status">{{latestTrace || stateName}}</view>
+    <view class="info-status-time" wx:if="{{latestTime}}">最近更新 {{latestTime}}</view>
+    <view class="info-meta-row">
+      <text class="info-com">{{comName}}</text>
+      <text class="info-num">运单号 {{nu}}</text>
     </view>
   </view>
 
   <!-- 物流轨迹时间轴 -->
   <view class="card timeline-card" wx:if="{{traces.length > 0}}">
+    <view class="timeline-title">物流轨迹</view>
     <view class="timeline">
       <view
         class="timeline-item {{index === 0 ? 'latest' : ''}}"
@@ -35,12 +38,13 @@
 
   <!-- 空轨迹 -->
   <view class="card empty-trace" wx:if="{{traces.length === 0}}">
-    <text class="text-secondary">快递公司已记录单号，暂无物流更新，请稍后再查</text>
+    <text class="empty-trace-title">暂无物流更新</text>
+    <text class="text-secondary">快递公司已记录该单号，物流信息通常会在后续运输节点同步。</text>
   </view>
 
   <!-- 分享按钮 -->
   <view class="share-area">
-    <button class="btn-primary share-btn" open-type="share">分享给好友</button>
+    <button class="btn-secondary share-btn" open-type="share">分享查询结果</button>
   </view>
 
 </scroll-view>

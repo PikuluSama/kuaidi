@@ -1,49 +1,63 @@
 <!-- pages/index/index.wxml -->
 <navigation-bar title="快递查询" back="{{false}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
 
-<scroll-view scroll-y style="height: 100vh; background-color: #F5F5F5;">
+<scroll-view scroll-y style="height: 100vh; background-color: #F5F7F5;">
 
   <!-- 剪贴板提示 -->
-  <view class="clipboard-tip" wx:if="{{clipboardTip}}" bindtap="onTapClipboard">
-    <text>检测到单号 {{clipboardTip}}，点击查询</text>
-    <text class="clipboard-close" catchtap="onDismissClipboard">✕</text>
+  <view class="clipboard-tip" wx:if="{{clipboardTip}}">
+    <view class="clipboard-main" bindtap="onTapClipboard">
+      <text class="clipboard-label">检测到剪贴板中的运单号</text>
+      <text class="clipboard-value">{{clipboardTip}}</text>
+    </view>
+    <text class="clipboard-close" catchtap="onDismissClipboard">关闭</text>
   </view>
 
   <!-- 查询区域 -->
   <view class="card query-card">
+    <view class="query-eyebrow">快递物流查询</view>
+    <view class="query-title">输入单号，快速查看最新物流状态</view>
+    <view class="query-subtitle">支持自动识别快递公司，常用信息会在本机保留，便于继续查询。</view>
+
     <input
       class="input"
       placeholder="请输入快递单号"
+      placeholder-class="input-placeholder"
       value="{{trackingNum}}"
       bindinput="onNumInput"
       maxlength="30"
       disabled="{{loading}}"
     />
 
-    <picker
-      class="company-picker"
-      range="{{companyOptions}}"
-      range-key="name"
-      value="{{companyIndex}}"
-      bindchange="onCompanyChange"
-      disabled="{{loading}}"
-    >
-      <view class="picker-value">
-        <text>{{companyOptions[companyIndex].name}}</text>
-        <text class="picker-arrow">▼</text>
-      </view>
-    </picker>
+    <view class="form-helper-row">
+      <text class="helper-label">快递公司</text>
+      <picker
+        class="company-picker"
+        range="{{companyOptions}}"
+        range-key="name"
+        value="{{companyIndex}}"
+        bindchange="onCompanyChange"
+        disabled="{{loading}}"
+      >
+        <view class="picker-value">
+          <text>{{companyOptions[companyIndex].name}}</text>
+          <text class="picker-arrow">切换</text>
+        </view>
+      </picker>
+    </view>
 
-    <input
-      wx:if="{{showPhoneInput}}"
-      class="input phone-input"
-      placeholder="请输入收件手机号后4位"
-      value="{{phone}}"
-      bindinput="onPhoneInput"
-      maxlength="4"
-      type="number"
-      disabled="{{loading}}"
-    />
+    <view class="phone-panel" wx:if="{{showPhoneInput}}">
+      <view class="phone-copy">顺丰等场景需要收件手机号后 4 位完成校验。</view>
+      <input
+        class="input phone-input"
+        placeholder="请输入收件手机号后4位"
+        placeholder-class="input-placeholder"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+        maxlength="4"
+        type="number"
+        disabled="{{loading}}"
+      />
+    </view>
 
     <button
       class="btn-primary query-btn {{loading ? 'disabled' : ''}}"
@@ -53,7 +67,7 @@
       {{loading ? '查询中...' : '查询'}}
     </button>
 
-    <view class="remaining-tip" wx:if="{{remainingTip}}">
+    <view class="remaining-tip text-secondary" wx:if="{{remainingTip}}">
       <text>{{remainingTip}}</text>
     </view>
   </view>
@@ -74,15 +88,18 @@
         data-item="{{item}}"
       >
         <view class="history-main">
-          <view class="history-num">{{item.num}}</view>
+          <view class="history-head">
+            <view class="history-num">{{item.num}}</view>
+            <text class="history-state">{{item.stateName}}</text>
+          </view>
           <view class="history-meta">
             <text class="history-com">{{item.comName}}</text>
-            <text class="history-state">{{item.stateName}}</text>
+            <text class="history-time">{{item.queryTimeText || ''}}</text>
           </view>
           <view class="history-trace text-secondary">{{item.lastTrace}}</view>
         </view>
         <view class="history-actions">
-          <view class="history-delete" catchtap="onHistoryDelete" data-num="{{item.num}}">删除</view>
+          <view class="history-delete" catchtap="onHistoryDelete" data-num="{{item.num}}">移除</view>
         </view>
       </view>
     </view>
@@ -90,7 +107,8 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{history.length === 0 && !loading}}">
-    <text class="text-secondary">暂无查询记录</text>
+    <text class="empty-title">还没有查询记录</text>
+    <text class="text-secondary">查询过的单号会保存在本机，方便你快速继续查看。</text>
   </view>
 
 </scroll-view>

@@ -1,14 +1,38 @@
+.company-hero {
+  background-color: var(--color-card);
+}
+
+.company-eyebrow {
+  font-size: 22rpx;
+  color: var(--color-brand);
+  margin-bottom: 12rpx;
+}
+
 .company-name {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #111111;
+  font-size: 38rpx;
+  font-weight: 600;
+  color: var(--color-primary);
   margin-bottom: 16rpx;
 }
 
 .company-intro {
-  font-size: 28rpx;
-  color: #666666;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 14rpx;
+}
+
+.section-desc {
+  font-size: 24rpx;
   line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin-bottom: 24rpx;
 }
 
 .query-card .input {
@@ -19,19 +43,16 @@
 
 .query-card .btn-primary {
   width: 100% !important;
-  border: none;
 }
 
-.faq-title,
-.links-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #111111;
-  margin-bottom: 20rpx;
+.info-copy {
+  font-size: 26rpx;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
 }
 
 .faq-item {
-  margin-bottom: 24rpx;
+  margin-bottom: 32rpx;
 }
 
 .faq-item:last-child {
@@ -40,31 +61,38 @@
 
 .faq-q {
   font-size: 28rpx;
-  font-weight: bold;
-  color: #333333;
-  margin-bottom: 8rpx;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 12rpx;
 }
 
 .faq-a {
   font-size: 26rpx;
-  color: #666666;
-  line-height: 1.5;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
 }
 
 .links-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16rpx;
 }
 
 .link-item {
-  padding: 12rpx 24rpx;
-  background-color: #F5F5F5;
-  border-radius: 8rpx;
+  padding: 20rpx 24rpx;
+  background-color: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
   font-size: 26rpx;
-  color: #111111;
+  color: var(--color-primary);
 }
 
 .link-hover {
-  background-color: #E5E5E5;
+  background-color: var(--color-brand-soft);
+}
+
+.page-note {
+  margin: 24rpx 32rpx 56rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
 }

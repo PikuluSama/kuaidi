@@ -1,34 +1,43 @@
 <navigation-bar title="{{companyName}}查询" back="{{true}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
 
-<scroll-view scroll-y style="height: 100vh; background-color: #F5F5F5;">
-  <view class="card">
-    <view class="company-name">{{companyName}}</view>
+<scroll-view scroll-y style="height: 100vh; background-color: #F5F7F5;">
+  <view class="card company-hero">
+    <view class="company-eyebrow">{{companyName}}专题查询</view>
+    <view class="company-name">{{companyName}}物流查询</view>
     <view class="company-intro">{{companyIntro}}</view>
   </view>
 
   <view class="card query-card">
-    <input class="input" placeholder="请输入{{companyName}}单号" value="{{num}}" bindinput="onNumInput" maxlength="30" />
+    <view class="section-title">立即查询</view>
+    <view class="section-desc">输入{{companyName}}运单号，查看最新物流轨迹与签收状态。</view>
+    <input class="input" placeholder="请输入{{companyName}}单号" placeholder-class="input-placeholder" value="{{num}}" bindinput="onNumInput" maxlength="30" />
     <button class="btn-primary" bindtap="onQuery">查询</button>
   </view>
 
+  <view class="card intro-card">
+    <view class="section-title">查询说明</view>
+    <view class="info-copy">{{companyName}}单号可用于查看揽收、运输、派送与签收等节点信息。若系统提示需要补充验证信息，请按页面说明完成校验。</view>
+  </view>
+
   <view class="card faq-card">
-    <view class="faq-title">常见问题</view>
+    <view class="section-title">常见问题</view>
     <view class="faq-item">
-      <view class="faq-q">如何查询{{companyName}}？</view>
-      <view class="faq-a">在上方输入框中输入您的{{companyName}}快递单号，点击查询即可查看物流轨迹。系统会自动识别快递公司。</view>
+      <view class="faq-q">查询方式</view>
+      <view class="faq-a">输入{{companyName}}运单号后即可查询物流信息，系统会根据单号和查询结果自动匹配快递公司。</view>
     </view>
     <view class="faq-item">
-      <view class="faq-q">{{companyName}}单号格式是什么？</view>
+      <view class="faq-q">单号说明</view>
       <view class="faq-a">{{numFormat}}</view>
     </view>
     <view class="faq-item">
-      <view class="faq-q">{{companyName}}客服电话是多少？</view>
-      <view class="faq-a">{{phone}}</view>
+      <view class="faq-q">客服支持</view>
+      <view class="faq-a">如需进一步核验运单信息，可联系{{companyName}}官方客服：{{phone}}</view>
     </view>
   </view>
 
   <view class="card links-card">
-    <view class="links-title">其他快递查询</view>
+    <view class="section-title">相关快递查询</view>
+    <view class="section-desc">如需查询其他品牌物流，可直接切换对应专题页。</view>
     <view class="links-grid">
       <navigator url="/pages/company/shunfeng" class="link-item" hover-class="link-hover">顺丰速运</navigator>
       <navigator url="/pages/company/zhongtong" class="link-item" hover-class="link-hover">中通快递</navigator>
@@ -39,4 +48,6 @@
       <navigator url="/pages/company/jingdong" class="link-item" hover-class="link-hover">京东物流</navigator>
     </view>
   </view>
+
+  <view class="page-note">查询结果以快递公司最新物流同步为准，个别节点可能存在短时延迟。</view>
 </scroll-view>

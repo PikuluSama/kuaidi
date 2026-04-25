@@ -3,6 +3,14 @@ const api = require('../../utils/api.js')
 const storage = require('../../utils/storage.js')
 const { COMPANY_OPTIONS, isShunfeng, getCompanyName, getStateInfo } = require('../../utils/constants.js')
 
+function formatQueryTime(timestamp) {
+  if (!timestamp) return ''
+  const date = new Date(timestamp)
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+  return `${hour}:${minute}`
+}
+
 Page({
   data: {
     trackingNum: '',
@@ -39,7 +47,11 @@ Page({
   },
 
   _loadHistory() {
-    this.setData({ history: storage.getHistory() })
+    const history = storage.getHistory().map(item => ({
+      ...item,
+      queryTimeText: formatQueryTime(item.queryTime)
+    }))
+    this.setData({ history })
   },
 
   _checkClipboard() {
