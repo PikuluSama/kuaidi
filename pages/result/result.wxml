@@ -88,6 +88,8 @@
       <text class="text-secondary">快递公司已记录该单号，物流信息通常会在后续运输节点同步。</text>
     </view>
 
+    <view class="result-bottom-spacer"></view>
+
   </block>
 
 </scroll-view>
@@ -97,11 +99,10 @@
   <canvas type="2d" id="shareCanvas" class="share-canvas"></canvas>
 </root-portal>
 
-<!-- 浮动分享按钮：root-portal 脱离文档流，确保 Skyline 下 fixed 生效 -->
 <root-portal>
-  <view class="fab-share" wx:if="{{!loading && !errorCode}}">
-    <button class="fab-share-btn" open-type="share">
-      <view class="fab-share-icon"></view>
-    </button>
+  <view class="result-actions-fixed" wx:if="{{!loading && !errorCode}}">
+    <view class="result-actions-shell">
+      <button class="btn-primary share-action-btn" open-type="share">分享给亲友</button>
+    </view>
   </view>
 </root-portal>
