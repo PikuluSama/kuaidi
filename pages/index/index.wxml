@@ -1,7 +1,7 @@
 <!-- pages/index/index.wxml -->
 <navigation-bar title="快递查询" back="{{false}}" background-color="#FFFFFF" color="#111111"></navigation-bar>
 
-<scroll-view scroll-y style="height: 100vh; background-color: #F5F7F5;">
+<scroll-view scroll-y style="height: calc(100vh - 44px - env(safe-area-inset-top)); background-color: #F5F7F5;">
 
   <!-- 剪贴板提示 -->
   <view class="clipboard-tip" wx:if="{{clipboardTip}}">
@@ -27,7 +27,6 @@
         bindinput="onNumInput"
         bindfocus="onInputFocus"
         maxlength="30"
-        disabled="{{loading}}"
       />
       <view
         class="input-paste"
@@ -46,21 +45,16 @@
         bindinput="onPhoneInput"
         maxlength="4"
         type="number"
-        disabled="{{loading}}"
       />
     </view>
 
     <button
-      class="btn-primary query-btn {{loading ? 'disabled' : ''}}"
+      class="btn-primary query-btn"
       bindtap="onQuery"
-      disabled="{{loading}}"
     >
-      {{loading ? '查询中...' : '查询'}}
+      查询
     </button>
 
-    <view class="remaining-tip text-secondary" wx:if="{{remainingTip}}">
-      <text>{{remainingTip}}</text>
-    </view>
   </view>
 
   <!-- 查询历史 -->
@@ -95,7 +89,7 @@
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{history.length === 0 && !loading}}">
+  <view class="empty-state" wx:if="{{history.length === 0}}">
     <text class="empty-title">还没有查询记录</text>
     <text class="empty-desc">查询过的单号会保存在本机，方便你快速继续查看。</text>
   </view>

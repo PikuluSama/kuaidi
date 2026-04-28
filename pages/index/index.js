@@ -1,7 +1,6 @@
 // pages/index/index.js
-const api = require('../../utils/api.js')
 const storage = require('../../utils/storage.js')
-const { getCompanyName, getStateInfo, detectCompany } = require('../../utils/constants.js')
+const { detectCompany } = require('../../utils/constants.js')
 
 function formatQueryTime(timestamp) {
   if (!timestamp) return ''
@@ -35,11 +34,9 @@ Page({
     trackingNum: '',
     phone: '',
     showPhoneInput: false,
-    loading: false,
     history: [],
     clipboardTip: '',
-    clipboardHasContent: false,
-    remainingTip: ''
+    clipboardHasContent: false
   },
 
   onLoad(options) {
@@ -124,7 +121,7 @@ Page({
     })
   },
 
-  async onQuery() {
+  onQuery() {
     const { trackingNum, phone, showPhoneInput } = this.data
     const num = (trackingNum || '').trim()
 
@@ -138,49 +135,12 @@ Page({
       return
     }
 
-    this.setData({ loading: true })
+    const com = this.companyParam || detectCompany(num) || 'auto'
+    const phoneParam = showPhoneInput ? phone : ''
 
-    try {
-      const result = await api.queryExpress(num, this.companyParam || detectCompany(num) || 'auto', showPhoneInput ? phone : '')
-
-      this.setData({ loading: false })
-
-      if (result.code === 'OK') {
-        const stateInfo = getStateInfo(result.data.state)
-        const traces = result.data.traces || []
-        storage.addHistory({
-          num: result.data.nu,
-          com: result.data.com,
-          comName: getCompanyName(result.data.com),
-          state: result.data.state,
-          stateName: stateInfo.name,
-          stateTag: stateInfo.tagClass,
-          lastTrace: traces.length > 0 ? traces[0].context : '暂无物流信息',
-          queryTime: Date.now()
-        })
-
-        const remaining = result.remaining
-        this.setData({
-          remainingTip: remaining <= 2 ? `今日还可查询 ${remaining} 次` : ''
-        })
-        this._loadHistory()
-
-        wx.setStorageSync('__temp_result', result.data)
-        wx.navigateTo({
-          url: `/pages/result/result?nu=${encodeURIComponent(result.data.nu)}`
-        })
-      } else if (result.code === 'LIMIT_EXCEEDED') {
-        this._showLimitDialog()
-      } else if (result.code === 'PHONE_REQUIRED') {
-        this.setData({ showPhoneInput: true })
-        wx.showToast({ title: '此快递需要手机号后4位，请填写', icon: 'none', duration: 2500 })
-      } else {
-        wx.showToast({ title: result.message || '查询失败，请重试', icon: 'none', duration: 2500 })
-      }
-    } catch (e) {
-      this.setData({ loading: false })
-      wx.showToast({ title: '网络异常，请检查网络后重试', icon: 'none' })
-    }
+    wx.navigateTo({
+      url: `/pages/result/result?nu=${encodeURIComponent(num)}&com=${encodeURIComponent(com)}&phone=${encodeURIComponent(phoneParam)}`
+    })
   },
 
   onHistoryTap(e) {
@@ -213,17 +173,5 @@ Page({
         }
       }
     })
-  },
-
-  _showLimitDialog() {
-    wx.showModal({
-      title: '今日查询次数已用完',
-      content: '明天可继续使用，感谢理解',
-      showCancel: false,
-      confirmText: '知道了'
-    })
   }
-
-  // V2：广告功能（流量主资质满足后启用）
-  // _showRewardedAd() { ... }
 })

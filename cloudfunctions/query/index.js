@@ -53,14 +53,21 @@ exports.main = async (event) => {
 
   const today = new Date().toISOString().slice(0, 10)
   const now = Date.now()
+  const cacheKey = num.toUpperCase()
 
-  // 2. 查询或创建 rate_limit 记录
-  let rateRes = await db.collection('rate_limit')
-    .where({ _openid: OPENID, date: today })
-    .get()
+  // 2. 并行：查询 rate_limit + 查询缓存
+  const [rateResult, cacheResult] = await Promise.all([
+    db.collection('rate_limit')
+      .where({ _openid: OPENID, date: today })
+      .get(),
+    db.collection('query_cache').doc(cacheKey).get()
+      .then(doc => ({ data: doc.data }))
+      .catch(() => ({ data: null }))
+  ])
 
   let rateId
-  if (rateRes.data.length === 0) {
+  let rate
+  if (rateResult.data.length === 0) {
     const addRes = await db.collection('rate_limit').add({
       data: {
         _openid: OPENID,
@@ -72,29 +79,21 @@ exports.main = async (event) => {
       }
     })
     rateId = addRes._id
-    rateRes = { data: [{ count: 0, bonus: 0, rewardCount: 0 }] }
+    rate = { count: 0, bonus: 0, rewardCount: 0 }
   } else {
-    rateId = rateRes.data[0]._id
+    rateId = rateResult.data[0]._id
+    rate = rateResult.data[0]
   }
-
-  const rate = rateRes.data[0]
 
   // 3. 检查次数
   if (rate.count >= DAILY_LIMIT + rate.bonus) {
     return { code: 'LIMIT_EXCEEDED', message: '今日查询次数已用完' }
   }
 
-  // 4. 检查单号级缓存
-  const cacheKey = num.toUpperCase()
+  // 4. 检查缓存结果
   let cachedResult = null
-
-  try {
-    const cacheDoc = await db.collection('query_cache').doc(cacheKey).get()
-    if (cacheDoc.data && (now - cacheDoc.data.createdAt < CACHE_TTL)) {
-      cachedResult = cacheDoc.data.result
-    }
-  } catch (e) {
-    // 缓存不存在，继续查询
+  if (cacheResult.data && (now - cacheResult.data.createdAt < CACHE_TTL)) {
+    cachedResult = cacheResult.data.result
   }
 
   let queryResult
@@ -128,15 +127,16 @@ exports.main = async (event) => {
     return { code: 'QUERY_ERROR', message: msg }
   }
 
-  // 7. 更新 rate_limit
-  await db.collection('rate_limit').doc(rateId).update({
-    data: { count: _.inc(1), lastQueryTime: now }
-  })
+  // 7. 并行：更新 rate_limit + 写入缓存
+  const writeOps = [
+    db.collection('rate_limit').doc(rateId).update({
+      data: { count: _.inc(1), lastQueryTime: now }
+    })
+  ]
 
-  // 8. 写入缓存
   if (!cachedResult) {
-    try {
-      await db.collection('query_cache').add({
+    writeOps.push(
+      db.collection('query_cache').add({
         data: {
           _id: cacheKey,
           result: queryResult,
@@ -144,16 +144,15 @@ exports.main = async (event) => {
           state: queryResult.state,
           createdAt: now
         }
-      })
-    } catch (e) {
-      // 已存在则更新
-      try {
-        await db.collection('query_cache').doc(cacheKey).update({
+      }).catch(() => {
+        return db.collection('query_cache').doc(cacheKey).update({
           data: { result: queryResult, com: queryResult.com, state: queryResult.state, createdAt: now }
-        })
-      } catch (e2) { /* ignore */ }
-    }
+        }).catch(() => {})
+      })
+    )
   }
+
+  await Promise.all(writeOps)
 
   // 9. 返回结果
   return {
